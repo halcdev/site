@@ -19,6 +19,12 @@ body {
     align-items: center; /* This aligns the images vertically in the center */
 }
 
+.side-by-side-left {
+    display: flex;
+    justify-content: left; /* This centers the images in the container */
+    align-items: left; /* This aligns the images vertically in the center */
+}
+
 
 
 /* Layout */
