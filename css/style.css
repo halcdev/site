@@ -26,6 +26,31 @@ body {
 }
 
 
+.twinkling-effect {
+    /* width: 50%;
+    height: 50%; */
+    /* position: fixed; */
+    top: 0;
+    left: 0;
+    background: linear-gradient(45deg, #ffff00, #ff82ff, #00ffff, #ffff00);
+    /* background: linear-gradient(45deg, #eeff00, #00f7ff, #2200ff, #a200ff); */
+    background-size: 400% 400%;
+    animation: twinkling 20s ease infinite;
+  }
+  
+  @keyframes twinkling {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+
 
 /* Layout */
 .container {
@@ -211,7 +236,7 @@ hr {
     color: grey;
 }
 #awards {
-    margin-bottom: 30px;
+    margin-bottom: 0px; /*30*/
 }
 #awards .row {
     display: grid;
