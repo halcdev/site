@@ -123,6 +123,9 @@
 
     <div id="experience" class="container">
       <div class="ctitle">Experience</div>
+
+      
+
       <div class="entry row project">
         <div class="desc">
           <h5>VidLabs.ai — Co-Founder</h5>
@@ -140,20 +143,37 @@
       <div class="entry row project">
         <div class="image-container">
           <!-- <a href="https://purduearc.com"><img width="150px" src="images/arc.png"></a> -->
-          <a href="https://purduearc.com"><img width="350px" src="images/arcmembers.png"></a>
+          <a href="https://purduearc.com"><img width="350px" src="images/dog.png"></a>
           <a href="https://rise.purduearc.com"><img width="350px" src="images/riseteam.jpg"></a>
         </div>
         <div class="desc">
           <h5>Purdue ARC — President</h5>
           <p>Propelled the Autonomous Robotics Club of Purdue (ARC) to 150+ active students, making it the university's largest robotics student organization, focused on advanced robotics research.</p>
           <!-- <p>ARC projects cover a wide range of disciplines at the forefront of autonomous robotics research.</p> -->
-          <p>Mentored 3 full-stack, AI-based research projects to achieve their technical goals within short timeframes (See Sphero Swarm and Rocket League under "Projects").</p>
+          <p>Mentored 3 full-stack, robotics-based projects to achieve their technical goals within short timeframes (See Sphero Swarm and Rocket League under "Projects").</p>
           <!-- <p>Articulated a clear vision for the club and delegated responsibilities efficiently to maximize available talents and resources.</p> -->
           <p>Organized the inaugural <b>Robotics and Intelligent Systems Expo</b> (RISE), <a href="https://engineering.purdue.edu/Engr/AboutUs/News/Spotlights/2023/2023-0428-icon-expo">attracting 200+ students</a> in a showcase of cutting-edge robotics research from all of Purdue.
              <!-- (<a href="https://robotics.umich.edu/academics/current-students/robotics-graduate-student-council/">UMich</a>, <a href="https://rad.engr.tamu.edu/">Texas A&M RAAD Lab</a>, <a href="https://www.unitree.com/">Unitree Robotics</a>).</p> -->
           <p>Has evolved into the largest student-run robotics and AI conference in the midwest.</p>
         </div>
       </div>
+
+      <div class="entry row project">
+
+        <div class="desc">
+          <h5>Robot Arm Simulator, Reinforcement Learning</h5>
+          <p>Developed a custom, open-sourced robot arm simulator in Python and ROSpy, for machine learning applications.</p>
+          <p>Trained it how to pick up objects in a nearby radius using natural language commands and LLMs for high-level planning, and the PPO reinforcement learning algorithm for low-level controls.</p>
+          <p>Includes a simulated vision system for obstacle detection, avoidance, and semantic-based manipulation.</p>
+        </div>
+        <div class="image-container" style="padding-left: 30px;">
+          <a href=""><img width="350px" src="images/sped_up_output.gif"></a>
+          <img alt="Prompt" src="images/constt.png" style="width:340px"></a>
+        </div>
+        
+        
+      </div>
+
       <div class="entry row project">
         <div class="desc">
           <h5>IBM & Boeing Corrosion Simulator</h5>
@@ -177,52 +197,13 @@
           <p>Completed under the guidance of Prof. Peter Bermel.</p>
         </div>
       </div>
-      <div class="entry row project">
-        <div class="desc">
-          <h5>IQ-PARC @ Purdue University</h5>
-          <p>As a software engineering interns, we created a quantum version of the classic Prisoner's Dilemma game optimized to run on embedded quantum hardware (based on <a href="https://arxiv.org/abs/quant-ph/9806088"> this paper</a>).</p>
-          <p>Designed an interactive frontend application with Python that communicates with a scalable IBM Quantum Provider backend.</p>
-          <p>Presented regular progress reports to my supervisors, got app published on NanoHub.org, and was awarded a stipend through a DoD sponsorship.</p>
-          <p>Completed under the guidance of Prof. Mahdi Hosseini.</p>
-        </div>
-        <div class="image-container" style="padding-left: 30px;">
-          <a href="https://www.youtube.com/watch?v=uOpv16AWQZI"><img width="300px" src="images/qpd.png"></a>
-          <div class="side-by-side">
-            <a href="https://iqparc.northwestern.edu/">
-                <img alt="IQParc" src="images/iqparc2.png" style="width:100px" class="aico">
-            </a>
-            <a>
-                <img alt="DoD" src="images/dod.png" style="width:200px" class="aico">
-            </a>
-        </div>
-        </div>
-      </div>
-      <div class="entry row project">
-        <div class="image-container">
-          <a href="https://docs.google.com/document/d/1elnCTOARMHLHBxqrZWXHJbzWsFkUv1QRF9iEDbGKsUU/edit?usp=sharing"><img width="400px" src="images/qcnn.png"></a>
-          <!-- style="box-shadow: none;" -->
-          <div class="side-by-side">
-            <a>
-                <img alt="Microsoft" src="images/microsoft.webp" style="width:100px" class="aico">
-            </a>
-            <a>
-                <div style="padding-left: 30px;"><img alt="IonQ" src="images/ionq.png" style="width:100px" class="aico"></div>
-            </a>
-          </div>
-        </div>
-        <div class="desc">
-          <h5>Quantum Machine Learning</h5>
-          <p>Developing a Quantum Convolutional Neural Network implementation that operates natively on quantum hardware, in collaboration with Microsoft and IonQ.</p>
-          <p>Researched the limitations of using quantum computers for classical image recognition tasks and quantum encoding of classical data.</p>
-          <p>Measured accuracy and speed, specifically for recognizing handwritten digits, surpassing traditional neural network limitations on niche tasks.</p>
-        </div>
-      </div>
+      
       <div class="entry row project">
         <div class="desc">
           <h5>Soccer-Car Reinforcement Learning Agent (Rocket League)</h5>
           <p>Constructed a PPO reinforcement learning algorithm with OpenAI's Gym, PyTorch, and StableBaselines3 to train an autonomous car how to play soccer.</p>
           <p>Tuned hyperparameters with constrained computing resources to achieve a 90% agent win rate.</p>
-          <p><a href="https://www.youtube.com/watch?v=R5Zm16tDwiQ">Physical autonomous vehicl (watch video)</a> is controlled by a centralized computer running a high-level physics simulator of the entire system that dictates the low-level agent controls (see linked video above!).</p>
+          <p><a href="https://www.youtube.com/watch?v=R5Zm16tDwiQ">Physical autonomous vehicle (watch video)</a> is controlled by a centralized computer running a high-level physics simulator of the entire system that dictates the low-level agent controls (see linked video above!).</p>
           <p>Vehicle tracking, ball tracking, and path error correction all done via low-latency computer vision.</p>
         </div>
         <div class="image-container" style="padding-left: 30px;">
@@ -288,6 +269,46 @@
           <h5>AI Virtual Assistant (Will be updated soon)</h5>
           <p>Developed an image-to-video model using the HyperGAN framework, enabling dynamic morphing of human facial images for precise lip-syncing with text-to-speech outputs. This creates a seamless audio-visual experience in AI-based therapy sessions.</p>
           <p>Implemented a CNN to accurately classify a wide range of facial expressions and interpret spoken words in real-time, utilizing webcam and audio inputs for GPT-based emotion and speech analysis. <a href="https://youtu.be/sQt2j67m1qI">Watch video here!</a></p>
+        </div>
+      </div>
+      <div class="entry row project">
+        <div class="desc">
+          <h5>IQ-PARC @ Purdue University</h5>
+          <p>As a software engineering interns, we created a quantum version of the classic Prisoner's Dilemma game optimized to run on embedded quantum hardware (based on <a href="https://arxiv.org/abs/quant-ph/9806088"> this paper</a>).</p>
+          <p>Designed an interactive frontend application with Python that communicates with a scalable IBM Quantum Provider backend.</p>
+          <p>Presented regular progress reports to my supervisors, got app published on NanoHub.org, and was awarded a stipend through a DoD sponsorship.</p>
+          <p>Completed under the guidance of Prof. Mahdi Hosseini.</p>
+        </div>
+        <div class="image-container" style="padding-left: 30px;">
+          <a href="https://www.youtube.com/watch?v=uOpv16AWQZI"><img width="300px" src="images/qpd.png"></a>
+          <div class="side-by-side">
+            <a href="https://iqparc.northwestern.edu/">
+                <img alt="IQParc" src="images/iqparc2.png" style="width:100px" class="aico">
+            </a>
+            <a>
+                <img alt="DoD" src="images/dod.png" style="width:200px" class="aico">
+            </a>
+        </div>
+        </div>
+      </div>
+      <div class="entry row project">
+        <div class="image-container">
+          <a href="https://docs.google.com/document/d/1elnCTOARMHLHBxqrZWXHJbzWsFkUv1QRF9iEDbGKsUU/edit?usp=sharing"><img width="400px" src="images/qcnn.png"></a>
+          <!-- style="box-shadow: none;" -->
+          <div class="side-by-side">
+            <a>
+                <img alt="Microsoft" src="images/microsoft.webp" style="width:100px" class="aico">
+            </a>
+            <a>
+                <div style="padding-left: 30px;"><img alt="IonQ" src="images/ionq.png" style="width:100px" class="aico"></div>
+            </a>
+          </div>
+        </div>
+        <div class="desc">
+          <h5>Quantum Machine Learning</h5>
+          <p>Developing a Quantum Convolutional Neural Network implementation that operates natively on quantum hardware, in collaboration with Microsoft and IonQ.</p>
+          <p>Researched the limitations of using quantum computers for classical image recognition tasks and quantum encoding of classical data.</p>
+          <p>Measured accuracy and speed, specifically for recognizing handwritten digits, surpassing traditional neural network limitations on niche tasks.</p>
         </div>
       </div>
       <!-- <div class="entry row project">
