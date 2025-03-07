@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wave Animation</title>
+    <style>
+        body { margin: 0; }
+        canvas { display: block; }
+    </style>
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = null; // Make scene background transparent
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            alpha: true,  // Enable transparency
+            antialias: true, // Make edges smoother
+            precision: 'highp' // Use high precision rendering
+        });
+        
+        // Set pixel ratio for high DPI displays
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Set clear color to transparent
+        document.body.appendChild(renderer.domElement);
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Create ribbon with increased resolution
+        let ribbon = new THREE.Mesh(
+            new THREE.PlaneGeometry(10, 1, 300, 3), // Increased segments for smoother waves
+            new THREE.MeshStandardMaterial({ 
+                color: '#D31CFF', // Changed from orange to vibrant purple
+                side: THREE.DoubleSide,
+                flatShading: false, // Enable smooth shading
+                roughness: 0.5,     // Add some material quality
+                metalness: 0.2      // Add slight metallic effect
+            })
+        );
+
+        scene.add(ribbon);
+        ribbon.rotation.x += Math.PI * -.5;
+        ribbon.position.y += 1;
+
+        // Set camera position
+        camera.position.set(0, 3, 5);
+        camera.lookAt(0, 0, 0);
+
+        let updateRibbon = () => {
+            let time = performance.now() / 1000;
+            let verts = ribbon.geometry.attributes.position.array;
+
+            for (let i = 0; i < verts.length; i += 3) {
+                let vx = verts[i];
+                let vy = verts[i + 1];
+                verts[i + 2] = Math.sin(time + (vx * 1.1)) * .2;
+                verts[i + 2] += Math.sin(time + (vx * 2.1)) * .1;
+                verts[i + 2] += Math.cos(time + (vx + vy * 1.1)) * .2;
+            }
+
+            ribbon.geometry.computeVertexNormals();
+            ribbon.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            updateRibbon();
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio); // Maintain pixel ratio on resize
+        }
+
+        animate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Wave Animation with Vapi AI Assistant</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden; /* Prevent scrollbars */
+        }
+        canvas { 
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        /* Force the Vapi button to be a perfect circle and center it */
+        .vapi-btn {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 120px !important;
+            height: 120px !important;
+            border-radius: 50% !important;
+            margin: 0 !important;
+            z-index: 2 !important; /* Ensure button is above the canvas */
+        }
+    </style>
+</head>
+<body>
+    <!-- Three.js Script -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = null; // Make scene background transparent
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ 
+            alpha: true,  // Enable transparency
+            antialias: true, // Make edges smoother
+            precision: 'highp' // Use high precision rendering
+        });
+        
+        // Set pixel ratio for high DPI displays
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setClearColor(0x000000, 0); // Set clear color to transparent
+        document.body.appendChild(renderer.domElement);
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Create ribbon with increased resolution
+        let ribbon = new THREE.Mesh(
+            new THREE.PlaneGeometry(30, 1, 300, 3), // Increased width to 30 units
+            new THREE.MeshStandardMaterial({ 
+                color: '#D31CFF', // Vibrant purple
+                side: THREE.DoubleSide,
+                flatShading: false, // Enable smooth shading
+                roughness: 0.5,     // Add some material quality
+                metalness: 0.2      // Add slight metallic effect
+            })
+        );
+
+        scene.add(ribbon);
+        ribbon.rotation.x += Math.PI * -.5;
+        ribbon.position.y = 0; // Center vertically
+
+        // Set camera position for better framing
+        camera.position.set(0, 4, 8); // Moved back and up slightly
+        camera.lookAt(0, 0, 0);
+
+        // Add automatic ribbon width adjustment
+        function adjustRibbonToScreen() {
+            // Calculate the visible width at the ribbon's z-position
+            const distance = Math.abs(camera.position.z - ribbon.position.z);
+            const vFov = THREE.MathUtils.degToRad(camera.fov);
+            const visibleHeight = 2 * Math.tan(vFov / 2) * distance;
+            const visibleWidth = visibleHeight * camera.aspect;
+            
+            // Add some padding to ensure it extends past the edges
+            ribbon.scale.x = (visibleWidth / 30) * 1.2; // 20% wider than screen
+        }
+
+        // Modify onWindowResize to include ribbon adjustment
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            adjustRibbonToScreen(); // Adjust ribbon width on resize
+        }
+
+        // Initial adjustment
+        adjustRibbonToScreen();
+
+        // Add speed control variables
+        let targetSpeedMultiplier = 1;
+        let currentSpeedMultiplier = 1;
+        const SPEED_UP_FACTOR = 2.5; // How much faster it gets when loading
+        const TRANSITION_DURATION = 0.4; // Transition duration in seconds
+
+        // Linear interpolation helper
+        function lerp(start, end, t) {
+            return start * (1 - t) + end * t;
+        }
+
+        let lastTime = performance.now() / 1000;
+        let updateRibbon = () => {
+            let currentTime = performance.now() / 1000;
+            let deltaTime = currentTime - lastTime;
+            lastTime = currentTime;
+
+            // Smoothly transition the speed multiplier
+            if (currentSpeedMultiplier !== targetSpeedMultiplier) {
+                const transitionRate = deltaTime / TRANSITION_DURATION;
+                currentSpeedMultiplier = lerp(
+                    currentSpeedMultiplier,
+                    targetSpeedMultiplier,
+                    Math.min(transitionRate, 1)
+                );
+            }
+
+            let time = currentTime * currentSpeedMultiplier;
+            let verts = ribbon.geometry.attributes.position.array;
+
+            for (let i = 0; i < verts.length; i += 3) {
+                let vx = verts[i];
+                let vy = verts[i + 1];
+                verts[i + 2] = Math.sin(time + (vx * 1.1)) * .3;
+                verts[i + 2] += Math.sin(time + (vx * 2.1)) * .15;
+                verts[i + 2] += Math.cos(time + (vx + vy * 1.1)) * .3;
+            }
+
+            ribbon.geometry.computeVertexNormals();
+            ribbon.geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+            updateRibbon();
+            renderer.render(scene, camera);
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', onWindowResize, false);
+
+        animate();
+    </script>
+
+    <!-- Vapi AI Assistant Script -->
+    <script>
+        var vapiInstance = null;
+        const assistant = "1e65c9ab-8823-4412-9d0c-dc44f1de486f";
+        const apiKey = "c511b347-7f29-4262-aa4d-4c0c44bebca1";
+
+        // Track button state
+        let buttonState = 'idle'; // 'idle', 'loading', or 'active'
+
+        // Function to handle button state changes
+        function updateButtonState(newState) {
+            console.log(`Button state changed from ${buttonState} to ${newState}`);
+            buttonState = newState;
+            
+            // Update wave speed based on button state
+            if (newState === 'loading') {
+                targetSpeedMultiplier = SPEED_UP_FACTOR; // Speed up during loading
+            } else {
+                targetSpeedMultiplier = 1; // Normal speed for idle and active
+            }
+        }
+
+        // Button configuration: circular button with purple shades
+        const buttonConfig = {
+            position: "bottom-right",
+            offset: "0px",
+            width: "120px",
+            height: "120px",
+            idle: {
+                color: `#E94FE9`,  // Deep purple for idle state
+                type: "round",
+                icon: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='22'%3E%3C/line%3E%3C/svg%3E`
+            },
+            loading: {
+                color: `rgb(186,85,211)`, // Lighter purple when connecting
+                type: "round",
+                icon: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-6.219-8.56'%3E%3C/path%3E%3C/svg%3E`
+            },
+            active: {
+                color: `rgb(169, 0, 187)`, // Soft purple when active
+                type: "round",
+                icon: `data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7 2 2 0 0 1 1.72 2v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.42 19.42 0 0 1-3.33-2.67m-2.67-3.34a19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91'%3E%3C/path%3E%3Cline x1='23' y1='1' x2='1' y2='23'%3E%3C/line%3E%3C/svg%3E`
+            }
+        };
+
+        (function (d, t) {
+            var g = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            g.src = "https://cdn.jsdelivr.net/gh/VapiAI/html-script-tag@latest/dist/assets/index.js";
+            g.defer = true;
+            g.async = true;
+            s.parentNode.insertBefore(g, s);
+            g.onload = function () {
+                vapiInstance = window.vapiSDK.run({
+                    apiKey: apiKey,
+                    assistant: assistant,
+                    config: buttonConfig
+                });
+
+                // Listen to all state change events
+                vapiInstance.on('state-change', (state) => {
+                    console.log('State changed:', state);
+                    if (state === 'connecting' || state === 'reconnecting') {
+                        updateButtonState('loading');
+                    } else if (state === 'connected') {
+                        updateButtonState('active');
+                    } else if (state === 'disconnected' || state === 'idle') {
+                        updateButtonState('idle');
+                    }
+                });
+
+                // Also listen to button clicks directly
+                document.addEventListener('click', (e) => {
+                    // Check if the click was on the Vapi button
+                    if (e.target.closest('.vapi-btn')) {
+                        console.log('Button clicked');
+                        // If we're in idle state, this click should transition to loading
+                        if (buttonState === 'idle') {
+                            updateButtonState('loading');
+                        }
+                    }
+                }, true);
+
+                // Backup events in case state-change doesn't work reliably
+                vapiInstance.on('call-start', () => { 
+                    console.log('Call has started');
+                    updateButtonState('active');
+                });
+
+                vapiInstance.on('call-end', () => { 
+                    console.log('Call has stopped');
+                    updateButtonState('idle');
+                });
+
+                // Additional listeners for debugging
+                vapiInstance.on('speech-start', () => { console.log('Speech has started'); });
+                vapiInstance.on('speech-end', () => { console.log('Speech has ended'); });
+                vapiInstance.on('volume-level', (volume) => { console.log(`Volume: ${volume}`); });
+                vapiInstance.on('message', (message) => { console.log('Message:', message); });
+                vapiInstance.on('error', (e) => { console.error('Error:', e); });
+            };
+        })(document, "script");
+    </script>
+</body>
+</html> 
