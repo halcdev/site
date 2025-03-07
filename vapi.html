@@ -46,7 +46,7 @@
             width: 120px !important;
             height: 120px !important;
             border-radius: 9999px !important;
-            background: rgba(224, 47, 255, 0.15) !important;
+            background: rgba(255, 100, 255, 0.4) !important; /* Brighter purple */
             backdrop-filter: blur(8px) !important;
             position: fixed !important;
             top: 50% !important;
@@ -59,14 +59,21 @@
             align-items: center !important;
             justify-content: center !important;
             cursor: pointer !important;
-            box-shadow: 0 0 0 1px rgba(224, 47, 255, 0.2),
-                        0 0 20px -4px rgba(224, 47, 255, 0.15) !important;
+            box-shadow: 0 0 0 1px rgba(255, 100, 255, 0.2), /* Brighter purple shadow */
+                        0 0 20px -4px rgba(255, 100, 255, 0.15) !important; /* Brighter purple shadow */
           }
-          
+
           .vapi-btn:hover {
-            background: rgba(224, 47, 255, 0.2) !important;
-            box-shadow: 0 0 0 1px rgba(224, 47, 255, 0.3),
-                        0 0 20px -4px rgba(224, 47, 255, 0.2) !important;
+            background: rgba(255, 100, 255, 0.15) !important; /* Brighter purple on hover */
+            box-shadow: 0 0 0 1px rgba(255, 100, 255, 0.4), /* Brighter purple shadow on hover */
+                        0 0 20px -4px rgba(255, 100, 255, 0.25) !important; /* Brighter purple shadow on hover */
+            transform: scale(1.05); /* Hover effect */
+          }
+
+          .vapi-btn[data-state="active"] {
+            background: rgba(255, 100, 255, 0.25) !important; /* Brighter purple when active */
+            box-shadow: 0 0 0 1px rgba(255, 100, 255, 0.4), /* Brighter purple shadow when active */
+                        0 0 30px -4px rgba(255, 100, 255, 0.3) !important; /* Brighter purple shadow when active */
           }
 
           .vapi-btn[data-state="active"] {
@@ -112,35 +119,6 @@
           @keyframes spin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
-          }
-
-          /* Decorative rings */
-          .vapi-btn::before {
-            content: '';
-            position: absolute;
-            inset: -30px;
-            border-radius: 9999px;
-            border: 2px solid rgba(224, 47, 255, 0.1);
-            opacity: 0;
-            transform: scale(1.2);
-            transition: all 0.3s ease;
-          }
-
-          .vapi-btn[data-state="active"]::before {
-            border-color: rgba(224, 47, 255, 0.2);
-            animation: pulse 2s ease-out infinite;
-            opacity: 1;
-          }
-
-          @keyframes pulse {
-            0% {
-              transform: scale(1);
-              opacity: 1;
-            }
-            100% {
-              transform: scale(2);
-              opacity: 0;
-            }
           }
 
           /* Remove any default Vapi styles */
@@ -206,33 +184,7 @@
           height: "100vh",
           overflow: "hidden"
         }}>
-          {/* Thin 3D pulse wave (SVG) behind the button */}
-          <div style={{
-            position: "absolute",
-            top: "50%",
-            left: 0,
-            width: "100%",
-            transform: "translateY(-50%)",
-            zIndex: 0,
-            pointerEvents: "none"
-          }}>
-            <svg
-              viewBox="0 0 1440 320"
-              preserveAspectRatio="none"
-              style={{
-                width: "100%",
-                height: "auto",
-                animation: "wavePulse 5s ease-in-out infinite"
-              }}
-            >
-              <path
-                fill="#E02FFF"
-                fillOpacity="0.6"
-                d="M0,160L40,170.7C80,181,160,203,240,186.7C320,171,400,117,480,112C560,107,640,149,720,160C800,171,880,149,960,138.7C1040,128,1120,128,1200,138.7C1280,149,1360,171,1400,181.3L1440,192L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"
-              />
-            </svg>
-          </div>
-
+          {/* The wave effect div is removed */}
           {/* No bottom text – removed per your request */}
         </div>
       );
