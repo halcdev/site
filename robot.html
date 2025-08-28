@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Humanoid Interest</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <style>
+    :root { --bg: #000; --fg: #fff; }
+
+    /* Fullscreen, no scroll, centered */
+    html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg); }
+    html, body { overflow: hidden; }
+    body { position: fixed; inset: 0; display: grid; place-items: center;
+           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+
+    /* Layout */
+    main { max-width: 44rem; padding: 2rem; text-align: center; display: grid; gap: 1.1rem; }
+    h1, p { margin: 0; line-height: 1.25; font-weight: 500; letter-spacing: .01em; }
+
+    /* Responsive type that always fits without scrolling */
+    h1 { font-size: clamp(1.4rem, 3.2vw, 2.4rem); }
+    p  { font-size: clamp(1rem, 2.2vw, 1.2rem); }
+
+    /* Input row */
+    .row { display: grid; grid-template-columns: 1fr auto; gap: .75rem; align-items: center; margin-top: .25rem; }
+
+    input[type="text"] {
+      background: transparent; color: var(--fg);
+      border: 1px solid var(--fg); border-radius: 9999px;
+      padding: .9rem 1rem; width: 100%;
+      font-size: clamp(1rem, 2.5vw, 1.125rem);
+      outline: none;
+    }
+    input::placeholder { color: var(--fg); opacity: 1; } /* white only */
+
+    button {
+      background: var(--fg); color: var(--bg); border: none;
+      padding: .9rem 1.1rem; border-radius: 9999px;
+      font-size: clamp(1rem, 2.5vw, 1.125rem);
+      cursor: pointer;
+    }
+
+    /* Keyboard focus (white only, no system colors) */
+    input:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+    /* Ensure fit on short viewports */
+    @media (max-height: 520px) {
+      main { padding: 1rem; gap: .7rem; }
+      input, button { padding: .75rem 1rem; }
+    }
+
+    /* Selection (keep black/white only) */
+    ::selection { background: #fff; color: #000; }
+  </style>
+</head>
+<body>
+  <main role="main" aria-labelledby="headline">
+    <h1 id="headline">We are building the Bugatti of humanoid robots.</h1>
+
+    <p>If you are an Engineer, Artist, Crafter, or Marketer...</p>
+
+    <p>Mark your interest by entering your phone number or email address below.</p>
+
+    <form id="interestForm" class="row" action="#" method="get" autocomplete="on" novalidate>
+      <input id="contactInput" type="text" inputmode="text" placeholder="Phone or email"
+             aria-label="Preferred contact method" />
+      <button id="contactButton" type="submit">Submit</button>
+    </form>
+
+    <p>We will contact you shortly with more details about an event taking place on the Purdue University campus.</p>
+  </main>
+
+  <noscript>
+    <!-- JavaScript is required to jump to the Google Form -->
+  </noscript>
+
+  <script>
+    (function () {
+      var form   = document.getElementById('interestForm');
+      var input  = document.getElementById('contactInput');
+
+      function go() {
+        var value = (input.value || '').trim();
+        if (!value) { input.focus(); return; }
+
+        /* Replace these with YOUR Google Form values.
+           Keep the entry.* id for the specific field you created in your form.
+           Example values below mirror your provided sample. */
+        var formBase = 'https://docs.google.com/forms/d/e/1FAIpQLScGfRawi-e_UQPNH34jTElY65G3dl4McT1Lfcyp3JDR8cYI5A/viewform?usp=pp_url';
+        var entryId  = 'entry.1699467091'; // your single text field (phone or email)
+
+        var url = formBase + '&' + entryId + '=' + encodeURIComponent(value);
+        // Use replace so back-button doesn't return to the intermediate page
+        window.location.replace(url);
+      }
+
+      form.addEventListener('submit', function (e) { e.preventDefault(); go(); });
+    })();
+  </script>
+</body>
+</html>
